@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://use.fontawesome.com/2be1208a4e.js"></script>
+    <link rel="stylesheet" 
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+        crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-dark">
+    <div class="container wrapper rounded mt-2 col-12  bg-dark">
+        <div class="header col-12 bg-danger pt-4 border rounded">
+            <div class="text-center">
+                <h3 class=" text-light">Income<img height="50" 
+                src="./images/logo.png" alt=""> Tracker</h3>
+            </div>
+            <div class="income-Balance text-center mt-4 pb-5">
+                <div class="d-flex">
+                    <div class="avail-bal col-6">
+                        <h5 class="text-warning"> Balance</h5>
+                        <h5 class="text-success"> $<span class="text-light avail-price">3000,000</h5>
+                    </div>
+                    <div class="avail-bal col-6">
+    <h5 class="text-warning">Total Income</h5>
+    <h5 class="text-success"> $<span class="text-light total-income">3000,000</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid transaction-container  bg-white border-success">
+            <section class="container">
+            <div class="container tracker-container text-center bg-danger rounded pt-3 d-flex">
+                <div class="col-6">
+                    <div class="income text-success">
+                        <button class="btn btn-sm text-success credit-btn bg-light">Credit account</button>
+                    </div>
+                </div>
+                    <div class="col-6">
+                        <div class="expenses text-success">
+                            <button class="btn btn-sm bg-info debit-btn text-light mb-2">Debit account</button>
+                        </div>
+                </div>
+            </div>
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+            </section>
+        <secttion class="income-container   container-fluid">
+            <div class="position-relative">
+                <h1 class="text-success">Income</h1>
+                <span class="income-cancel"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+            <div class="form-container">
+                <form class="form income-form">
+                    <div class="form-group">
+                        <label class="form-label text-success">Amount</label>
+                        <input class="form-control" type="text" name="income"
+                         id="income" placeholder="2000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label text-success">Income source</label>
+                        <input class="form-control" type="text" name="income" 
+                        id="income-source" placeholder="E.g : Salary" required>
+                    </div>
+                    <button class="btn btn-danger btn-block" type="submit">Add Income</button>
+                </form>
+            </div>
+            <div class="transaction-history">
+                <h5 class="text-success mt-3">Transaction history</h5>
+                <div class="history-tb">
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Income source</th>
+                            <th scope="col">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="income-list">
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </secttion>
+        <secttion class="expense-container container-fluid">
+            <div class="position-relative">
+                <h1 class="text-success">Expenses</h1>
+                <span class="expense-cancel"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+            </div>
+            <div class="form-container">
+                <form class="form expenses-form">
+                    <div class="form-group">
+                        <label class="form-label text-success">Amount</label>
+                        <input class="form-control"
+                         type="number"
+                         name="expenses"
+                          id="expense" 
+                        placeholder="2000" 
+                        required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label text-success">Expense Reason</label>
+                        <input class="form-control" type="text" 
+                          name="expense-reason"
+                         id="expense-reason"
+                         placeholder="E.g : Shopping"
+                         required>
+                    </div>
+                    <button class="btn btn-danger btn-block" type="submit">Withdraw</button>
+                </form>
+            </div>
+            <div class="transaction-history">
+                <h5 class="text-success mt-3">Transaction history</h5>
+                <div class="history-tb">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Expense Reason</th>
+                                <th scope="col">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody class="expenses-list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </secttion>
+    </div>
+            <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            <script src="./index.js"></script>
+</body>
+</html>

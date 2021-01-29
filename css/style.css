@@ -1,0 +1,47 @@
+.transaction-container {
+  position: relative;
+  bottom: 20px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 30px;
+}
+@media (min-width: 400px) {
+  .wrapper {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.income-container,
+.expense-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: whitesmoke;
+  box-shadow: 1px 1px 4px grey;
+  border-radius: 10px;
+  display: none;
+}
+
+.active.income-container,
+.active.expense-container {
+  display: block;
+  z-index: 2222;
+}
+.form-group label {
+  font-size: 20px;
+}
+.expense-cancel,
+.income-cancel {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 30px;
+  color: rgb(255, 72, 0);
+}
