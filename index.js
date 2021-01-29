@@ -16,29 +16,47 @@ class Expenses {
 //updateUI class
 class updateUI {
     static displayIncomeAndExpenses() {
-
-        let storedIncome = [
-            { incomeSource: "Salary", amount: "2000" },
-            { incomeSource: "Loan", amount: "40000" },
-            { incomeSource: "freelance job", amount: "300" }
-        ]
-
-        let storedExpenses = [
-            { expenseReason: "Shopping", amount: "2000" },
-            { expenseReason: "Rent Bill", amount: "40000" },
-            { expenseReason: "Janitors salary", amount: "300" }
-        ]
-
+        let storedIncome = Storage.getIncome()
+        let storedExpenses = Storage.getExpenses()
         const incomes = storedIncome
         const expenses = storedExpenses;
-        let totalIncome = 0
-        for (let i = 0; i < incomes.length; i++){
-            totalIncome += +incomes[i].amount
-        }
-        console.log(totalIncome)
 
+        updateUI.updateTransaction(incomes, expenses)
         incomes.forEach((income) => updateUI.addIncomeToList(income))
         expenses.forEach((expense) => updateUI.addExpensesToList(expense))
+    }
+    static dynamicIncomeUpdate() {
+        let storedIncome = Storage.getIncome()
+        let storedExpenses = Storage.getExpenses()
+        const incomes = storedIncome
+        const expenses = storedExpenses;
+
+        updateUI.updateTransaction(incomes, expenses)
+    }
+
+    static updateTransaction(incomes, expenses) {
+        let totalAmount = 0;
+        let index = 0;
+        for (index = 0; index < incomes.length; index++) {
+            totalAmount += +incomes[index].amount
+        }
+        let totalExpenses = 0;
+        for (let i = 0; i < expenses.length; i++) {
+            totalExpenses += +expenses[i].amount
+        }
+        let balance = 0;
+
+        updateUI.updateIncome(totalAmount, totalExpenses, balance)        
+    }
+
+    static updateIncome(totalAmount, totalExpenses, balance) {
+        
+        balance = totalAmount - totalExpenses
+
+        document.querySelector(".avail-price").innerText = balance
+        document.querySelector(".total-income").innerText = totalAmount
+
+         updateUI.showChart(totalAmount, totalExpenses, balance)
     }
 
     static addIncomeToList(income) {
@@ -88,76 +106,20 @@ class updateUI {
     static showSection(element, container) {
         const icon = document.querySelector(element)
         icon.addEventListener("click", () => {
-        document.querySelector(container).classList.add("active")
+            document.querySelector(container).classList.add("active")
         })
-      }
+    }
 
     static hideSection(element, container) {
         const icon = document.querySelector(element)
         icon.addEventListener("click", () => {
-        document.querySelector(container).classList.remove("active")
+            document.querySelector(container).classList.remove("active")
         })
-      }
     }
-    
 
-//Event to display incomes
-document.addEventListener("DOMContentLoaded", updateUI.displayIncomeAndExpenses())
-
-//event to add income to list on for submission
-document.querySelector(".income-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const amount = document.querySelector("#income").value
-    const incomeSource = document.querySelector("#income-source").value
-
-    //instantiate new Income
-
-    const income = new Income(amount, incomeSource)
-
-    //add income to list
-    updateUI.addIncomeToList(income)
-
-    // clear form value field
-
-    updateUI.clearField()
-    //show alert
-    updateUI.showAlert(`$${amount} credited`, ".income-form", "bg-success")
-})
-
-//event to add expenses
-document.querySelector(".expenses-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const amount = document.querySelector("#expense").value
-    const expenseReason = document.querySelector("#expense-reason").value
-
-    //instantiate new Income
-
-    const expense = new Expenses(amount, expenseReason)
-
-    //add income to list
-    updateUI.addExpensesToList(expense)
-
-    //clear fields 
-    updateUI.clearField()
-
-    //show alert
-    updateUI.showAlert(`$${amount} Debited`, ".expenses-form", "bg-danger")
-})
-
-//hide section
-
-updateUI.hideSection(".expense-cancel .fa-times-circle", ".expense-container")
-updateUI.hideSection(".income-cancel .fa-times-circle", ".income-container")
-
-//show section
-updateUI.showSection(".debit-btn", ".expense-container")
-updateUI.showSection(".credit-btn", ".income-container")
-
-
-//canvasjs chart
-window.onload = function () {
-
-    var totalIncome = 883000;
+    static showChart(totalAmount, totalExpenses, balance) {
+         
+    var totalIncome = totalAmount + 100;
     var incomeData = {
         "income vs Expenses": [{
             click: incomeChartDrilldownHandler,
@@ -171,46 +133,26 @@ window.onload = function () {
             startAngle: 90,
             type: "doughnut",
             dataPoints: [
-                { y: 519960, name: "Income", color: "#E7823A" },
-                { y: 363040, name: "Expenses", color: "#546BC1" }
+                { y: balance + 50, name: "Income", color: "green" },
+                { y: totalExpenses + 50, name: "Expenses", color: "red" }
             ]
         }],
         "Income": [{
-            color: "#c23452",
+            color: "green",
             name: "Income",
             type: "column",
             dataPoints: [
-                { x: new Date("1 Jan 2015"), y: 33000 },
-                { x: new Date("1 Feb 2015"), y: 35960 },
-                { x: new Date("1 Mar 2015"), y: 42160 },
-                { x: new Date("1 Apr 2015"), y: 42240 },
-                { x: new Date("1 May 2015"), y: 43200 },
-                { x: new Date("1 Jun 2015"), y: 40600 },
-                { x: new Date("1 Jul 2015"), y: 42560 },
-                { x: new Date("1 Aug 2015"), y: 44280 },
-                { x: new Date("1 Sep 2015"), y: 44800 },
-                { x: new Date("1 Oct 2015"), y: 48720 },
-                { x: new Date("1 Nov 2015"), y: 50840 },
-                { x: new Date("1 Dec 2015"), y: 51600 }
+                { x: new Date(), y: totalAmount },
+                { x: new Date().getDay(), y: balance },
+                
             ]
         }],
         "Expenses": [{
-            color: "#546BC1",
+            color: "red",
             name: "Expenses",
             type: "column",
             dataPoints: [
-                { x: new Date("1 Jan 2015"), y: 22000 },
-                { x: new Date("1 Feb 2015"), y: 26040 },
-                { x: new Date("1 Mar 2015"), y: 25840 },
-                { x: new Date("1 Apr 2015"), y: 23760 },
-                { x: new Date("1 May 2015"), y: 28800 },
-                { x: new Date("1 Jun 2015"), y: 29400 },
-                { x: new Date("1 Jul 2015"), y: 33440 },
-                { x: new Date("1 Aug 2015"), y: 37720 },
-                { x: new Date("1 Sep 2015"), y: 35200 },
-                { x: new Date("1 Oct 2015"), y: 35280 },
-                { x: new Date("1 Nov 2015"), y: 31160 },
-                { x: new Date("1 Dec 2015"), y: 34400 }
+                { x: new Date(), y: totalExpenses},
             ]
         }]
     };
@@ -259,3 +201,113 @@ window.onload = function () {
         chart.render();
     }
 }
+}
+
+class Storage {
+        
+    static getIncome() {
+        let incomes;
+        if (localStorage.getItem("incomes") === null) {
+            incomes = []
+        } else {
+            incomes = JSON.parse(localStorage.getItem("incomes"))
+        }
+        return incomes
+    }
+
+    static addIncome(income) {
+        let incomes = Storage.getIncome()
+        incomes.push(income)
+        localStorage.setItem("incomes", JSON.stringify(incomes))
+    }
+
+    static getExpenses() {
+        let expenses;
+        if (localStorage.getItem("expenses") === null) {
+            expenses = []
+        } else {
+            expenses = JSON.parse(localStorage.getItem("expenses"))
+        }
+        return expenses
+    }
+
+    static addExpenses(expense) {
+        let expenses = Storage.getExpenses()
+        expenses.push(expense)
+        localStorage.setItem("expenses", JSON.stringify(expenses))
+    }
+    }
+    
+
+//Event to display incomes
+document.addEventListener("DOMContentLoaded", updateUI.displayIncomeAndExpenses())
+
+
+
+//event to add income to list on for submission
+document.querySelector(".income-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const amount = document.querySelector("#income").value
+    const incomeSource = document.querySelector("#income-source").value
+
+    //instantiate new Income
+    const income = new Income(amount, incomeSource)
+
+    
+
+        //add income to list
+        updateUI.addIncomeToList(income)
+
+        //add income to store
+        Storage.addIncome(income)
+
+        // clear form value field
+        updateUI.clearField()
+
+        //show alert
+        updateUI.showAlert(`$${amount} credited`, ".income-form", "bg-success")
+        
+        //dynamic account update 
+        updateUI.dynamicIncomeUpdate()
+    
+})
+
+//event to add expenses
+document.querySelector(".expenses-form").addEventListener("submit", function updateIncome(e) {
+    e.preventDefault();
+    const amount = document.querySelector("#expense").value
+    const expenseReason = document.querySelector("#expense-reason").value
+    const balance = document.querySelector(".avail-price").innerText
+
+    //instantiate new Income
+    const expense = new Expenses(amount, expenseReason)
+    if (expense.amount < +balance) {
+        //add income to list
+        updateUI.addExpensesToList(expense)
+
+        //add expenses to storage
+        Storage.addExpenses(expense)
+
+        //clear fields 
+        updateUI.clearField()
+
+        //show alert
+        updateUI.showAlert(`$${amount} Debited`, ".expenses-form", "bg-danger");
+
+          //dynamic account update 
+        updateUI.dynamicIncomeUpdate()
+    
+    } else {
+        updateUI.showAlert(`Insufficient fund`, ".expenses-form", "bg-danger")
+    }
+})
+
+//hide section
+
+updateUI.hideSection(".expense-cancel .fa-times-circle", ".expense-container")
+updateUI.hideSection(".income-cancel .fa-times-circle", ".income-container")
+
+//show section
+updateUI.showSection(".debit-btn", ".expense-container")
+updateUI.showSection(".credit-btn", ".income-container")
