@@ -1,18 +1,12 @@
 
-//IncomeTracker class
-class Income {
-    constructor(amount, incomeSource) {
+//Tracker class
+class Finance_Tracker  {
+    constructor(amount, description) {
         this.amount = amount,
-            this.incomeSource = incomeSource
+            this.description = description
     }
 }
-//expenses tracker class
-class Expenses {
-    constructor(amount, expenseReason) {
-        this.amount = amount,
-            this.expenseReason = expenseReason
-    }
-}
+
 //updateUI class
 class updateUI {
     static displayIncomeAndExpenses() {
@@ -65,7 +59,7 @@ class updateUI {
         tableRow.style.boxShadow = "1px 1px 2px grey";
         tableRow.classList.add("border")
         tableRow.innerHTML = `
-            <td >${income.incomeSource}</td>
+            <td >${income.description}</td>
             <td class = "text-success"> $<span class="income-amount">${income.amount}</span></td>
         `
         incomeList.appendChild(tableRow)
@@ -76,7 +70,7 @@ class updateUI {
         const tableRow = document.createElement("tr");
 
         tableRow.innerHTML = `
-            <td scope="col">${expense.expenseReason}</td>
+            <td scope="col">${expense.description}</td>
             <td class="text-danger" scope="col">$<span class="expense-amount">${expense.amount}</span></td>
         `
         expensesList.appendChild(tableRow)
@@ -252,7 +246,7 @@ document.querySelector(".income-form").addEventListener("submit", (e) => {
     const incomeSource = document.querySelector("#income-source").value
 
     //instantiate new Income
-    const income = new Income(amount, incomeSource)
+    const income = new Finance_Tracker(amount, incomeSource)
 
     
 
@@ -280,7 +274,7 @@ document.querySelector(".expenses-form").addEventListener("submit", function upd
     const expenseReason = document.querySelector("#expense-reason").value
     const balance = document.querySelector(".avail-price").innerText
 
-    //instantiate new Income
+    //instantiate new tracker for expenses 
     const expense = new Expenses(amount, expenseReason)
     if (expense.amount < +balance) {
         //add income to list
