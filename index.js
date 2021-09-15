@@ -3,11 +3,12 @@
 class Finance_Tracker  {
     constructor(amount, description) {
         this.amount = amount,
-            this.description = description
+        this.description = description
     }
 }
 
 //updateUI class
+//handles the User interface of the application
 class updateUI {
     static displayIncomeAndExpenses() {
         let storedIncome = Storage.getIncome()
@@ -19,6 +20,7 @@ class updateUI {
         incomes.forEach((income) => updateUI.addIncomeToList(income))
         expenses.forEach((expense) => updateUI.addExpensesToList(expense))
     }
+    //updates the income dynamically from the storage class
     static dynamicIncomeUpdate() {
         let storedIncome = Storage.getIncome()
         let storedExpenses = Storage.getExpenses()
@@ -27,13 +29,15 @@ class updateUI {
 
         updateUI.updateTransaction(incomes, expenses)
     }
-
+    //calculates the toltal balance and expenses base on income and expenditures
     static updateTransaction(incomes, expenses) {
         let totalAmount = 0;
         let index = 0;
+        //loop through the added income and add them together to get the total income 
         for (index = 0; index < incomes.length; index++) {
             totalAmount += +incomes[index].amount
         }
+        //loop through the expenses and add them together to get the total expenses
         let totalExpenses = 0;
         for (let i = 0; i < expenses.length; i++) {
             totalExpenses += +expenses[i].amount
@@ -52,7 +56,7 @@ class updateUI {
 
          updateUI.showChart(totalAmount, totalExpenses, balance)
     }
-
+    //update the UI with list of added incomes
     static addIncomeToList(income) {
         const incomeList = document.querySelector(".income-list");
         const tableRow = document.createElement("tr");
@@ -75,14 +79,14 @@ class updateUI {
         `
         expensesList.appendChild(tableRow)
     }
-
+   // clear the input field when after clicking on add button
     static clearField() {
         document.querySelector("#income").value = ""
         document.querySelector("#income-source").value = ""
         document.querySelector("#expense").value = ""
         document.querySelector("#expense-reason").value = ""
     }
-
+    //display alert after successfull transaction
     static showAlert(message, element, bgColor) {
         const container = document.querySelector(element)
         const div = document.createElement("div")
@@ -93,7 +97,7 @@ class updateUI {
         div.innerHTML = `<h5 class="text-white">${message}</h5>`
         container.prepend(div);
 
-        //remove the div in 3s
+        //remove the alert after 3s
         setTimeout(() => document.querySelector(".alert").remove(), 3000)
 
     }
@@ -110,7 +114,7 @@ class updateUI {
             document.querySelector(container).classList.remove("active")
         })
     }
-
+//method to display expenses and incomes.
     static showChart(totalAmount, totalExpenses, balance) {
          
     var totalIncome = totalAmount + 100;
